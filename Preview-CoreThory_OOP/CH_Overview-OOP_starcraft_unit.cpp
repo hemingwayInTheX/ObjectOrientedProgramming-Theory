@@ -1,3 +1,4 @@
+/*게임 유닛 생성을 통한 객체 지향의 전반적인 흐름 파악*/
 #include <iostream>
 using namespace std;
 
@@ -69,6 +70,22 @@ void Marine::show_status() {
 	if (is_dead == 1) { cout << "yes!\n"; }
 	else { cout << "no\n"; }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
