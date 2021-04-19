@@ -1,8 +1,10 @@
+/*CH_Preview_StaticMember
+		 <<<HOW TO USE STATIC_MEMBER??>>> */
 #include <iostream>
 using namespace std;
-/* STATIC MEMBER
-  #1 멤버는 객체 내부가 아닌 별도의 공간에 생성 --> 클래스 당 하나 생성
-  #2-1 객체가 생성되기 전 이미 프로그램 시작 시 멤버 생성
+/* STATIC MEMBER --> 프로그램과 생명을 같이 함 --> 전역변수와 전역함수를 클래스에 캡슐화
+  #1 STATIC 멤버는 객체 내부가 아닌 별도의 공간에 생성 --> 클래스 당 하나 생성
+  #2-1 객체가 생성되기 전 이미 프로그램 시작 할 때 멤버 생성
   #2-2 객체가 소멸되도 존재
   #3 동일한 클래스의 모든 객체들에 의해 공유 --> 객체와 멤버변수,멤버함수가 개인통장이라면, static멤버변수와, 멤버함수는 회비통장이라 생각하자!*/
 class Person {
@@ -15,7 +17,7 @@ private:
 };//Person 클래스 정의부
 
 /*static 멤버변수 초기화 = 클래스 멤버 변수처럼 초기화 되었지만, 실제 프로그램 시작 시 멤버가 생성
-   되었기 때문에 전역변수 처럼 클래스 외부에서 초기화를 진행*/
+   되었기 때문에 전역변수 처럼 전역공간에서 초기화를 진행*/
 int Person::sharedMoney = 10000;//첫 회비 내기 전 잔액 10000원
 
 int main(void) {
@@ -37,8 +39,8 @@ int main(void) {
 	ptr->unionMoney(10000);
 	
 	/*ERROR --> non-static멤버가 클래스 이름으로 접근할 경우*/
-	/*Person::money = 100;
-	Person::addMoney(200);*/
+	//Person::money = 100;
+	//Person::addMoney(200);
 	
 	return 0;
 }
@@ -46,7 +48,8 @@ int main(void) {
 /*Person 클래스 구현부*/
 void Person::addMoney(int money) {
 	this->money = money;
-	cout << "당신 통장의 현재 잔액은 = " << this->money << "원 입니다." << endl;
+	cout << "당신의 통장의 현재 잔액은 = " << this->money << "원 입니다." << endl;
+	cout << "현재 회비 총액은 = " << sharedMoney << "원입니다.\n";//일반 멤버 함수는 static멤버에 접근 가능.
 }
 /*static 멤버 함수는 static 멤버만 접근 가능
   #1) static 멤버변수와 함수 내의 지역변수만 접근 가능 --> nonStatic멤버는 접근 불가
