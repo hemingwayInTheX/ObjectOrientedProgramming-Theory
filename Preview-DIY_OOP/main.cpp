@@ -4,8 +4,13 @@ using namespace std;
 
 int main() {
     Hospital* client = new Hospital();
-    client->start();
+    cout << "***** 현탁병원에 오신것을 환영합니다 *****\n\n";
+    client->execute_prog();
     delete client;
+
+    system("pause");
+    return 0;
+
 }
 
 
