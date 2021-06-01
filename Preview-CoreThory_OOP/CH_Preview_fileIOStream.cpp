@@ -66,102 +66,128 @@ void MyDataStructure<typename T1, typename T2>::setDictonary(T1 key, T2 value) {
 void Problem1_2() {
 	vector<MyDataStructure<int, string>>vec_my_ds_1d;//1차원 벡터
 	MyDataStructure<int, string>mds[10];//크기 10인 객체 배열 
-	int idx = 1;
-	int sizeCnt = 1;
+	int sizeIdx = 0;
 	int inputKey = 0;//key입력
 	string inputValue = "";//value 입력
 
 	/*FIRST INPUT & INSERT */
 	cout << "INPUT KEY = "; cin >> inputKey;
 	cout << "INPUT VALUE = "; cin >> inputValue;
+	cout << "====================\n";
 	mds[0].setDictonary(inputKey, inputValue);//첫 번째 객체 배열 데이터 할당
 	vec_my_ds_1d.push_back(mds[0]);//벡터에 저장
 	/*SEARCH SAME KEY -->if(True) = renew value */
-	while (idx > 10) {//10번의 입력 수행
+	for (int i = 0; i < 10; i++) {
 		cout << "INPUT KEY = "; cin >> inputKey;
 		cout << "INPUT VALUE = "; cin >> inputValue;
+		cout << "====================\n";
 
-		for (int i = 0; i < vec_my_ds_1d.size(); i++) {
-			if (vec_my_ds_1d[i].getKey1D() == inputKey) {//동일한 key값이면 value를 사용자 입력값으로 갱신
-				vec_my_ds_1d[i].setValue(inputValue);
+		bool chkRenew = true;//동일 key값 탐색 후 갱신 여부 체크
+		sizeIdx = vec_my_ds_1d.size();//벡터에 새로 할당 될 경우 해당 벡터의 사이즈가 인덱스 정보로 활용
+
+		for (int j = 0; j < vec_my_ds_1d.size(); j++) {
+			if (vec_my_ds_1d[j].getKey1D() == inputKey) {//동일한 key값이면 value를 사용자 입력값으로 갱신
+				vec_my_ds_1d[j].setValue(inputValue);
+				chkRenew = false;
+				break;//key값 갱신 후 루프 탈출
 			}
 		}
-		mds[idx].setDictonary(inputKey, inputValue);//첫 번째 객체 배열 데이터 할당
-		vec_my_ds_1d.push_back(mds[idx]);//벡터에 저장
-		idx++;
+		if (chkRenew) {
+			mds[sizeIdx].setDictonary(inputKey, inputValue);//첫 번째 객체 배열 데이터 할당
+			vec_my_ds_1d.push_back(mds[sizeIdx]);//벡터에 저장
+		}
 	}
-
+	cout << "======AFTER INPUT======" << endl;
+	for (int i = 0; i < vec_my_ds_1d.size(); i++) { //입력 이후 벡터 내부 데이터 출력
+		vec_my_ds_1d[i].display_vector();
+	}
 }
 
 void Problem1_3() {
 	vector<MyDataStructure<string, vector<MyDataStructure<string, double>>>> vec_my_ds_2d;//2차원 벡터
 	vector<MyDataStructure<string, double>>vec_my_ds_1d;//1차원 벡터
 
-	int idx = 0;
-	int sizeCnt = 1;
-
-	MyDataStructure <string, double> mds1("john", 21);//제너릭 클래스 객체 생성
-	MyDataStructure <string, double> mds2("amy", 20);
-	MyDataStructure <string, double> mds3("mary", 23);
-
-	vec_my_ds_1d.push_back(mds1);//벡터에 객체 할당
-	vec_my_ds_1d.push_back(mds2);
-	vec_my_ds_1d.push_back(mds3);
-
-	MyDataStructure<string, vector<MyDataStructure<string, double>>> mds("student", vec_my_ds_1d);
-
-	vec_my_ds_2d.push_back(mds);
-	cout << "======BEFORE INPUT1======" << endl;
-	cout << "Key1 = " << vec_my_ds_2d[0].getKey2D() << '\t';
-	vec_my_ds_2d[0].getValue2D();
-
-	cout << "======BEFORE INPUT2======" << endl;
-	for (int i = 0; i < vec_my_ds_1d.size(); i++) { //입력 이전 벡터 내부 데이터 출력
-		vec_my_ds_1d[i].display_vector();
-	}
-	/*---INPUT---*/
-	cout << "input key >>";
-	string inputKey; cin >> inputKey;
-	cout << "input value >>";
-	double inputValue; cin >> inputValue;
-	/*---SEARCH---*/
-	while (idx < vec_my_ds_1d.size()) {//벡터 요소 갯수만큼 루프 수행 --> 인덱스 값이 특정 범위를 벗어나면 루프 탈출
-		if (vec_my_ds_1d[idx].getKey1D().compare(inputKey) == 0) {//사용자 입력 key값과 동일한 벡터 내의 key값 탐색
-			vec_my_ds_1d[idx].setValue(inputValue);//동일한 key값 탐색 시 해당 value값을 사용자 입력값으로 갱신후 루프 탈출
-			break;
-		}
-		idx++;//인덱스 증가
-		sizeCnt++;//동일 key값 없을 경우 벡터의 새 공간에 값을 할당하기 위해 체크하는 인덱스 변수
-	}
-	if (sizeCnt > vec_my_ds_1d.size()) {//동일한 key값 없으면 입력 쌍 벡터에 추가 대입 --> sizeCnt가 벡터의 요소갯수 보다 크면 조건 실행
-		MyDataStructure <string, double> mds(inputKey, inputValue);//객체생성
-		vec_my_ds_1d.push_back(mds);
-	}
-
-	cout << "======AFTER INPUT======" << endl;
-	for (int i = 0; i < vec_my_ds_1d.size(); i++) { //입력 이후 벡터 내부 데이터 출력
-		vec_my_ds_1d[i].display_vector();
-	}
+	//MyDataStructure<string, double>* mds1 = new MyDataStructure<string, double>[30000];
 
 	// 하단의 코드 수정 금지 
 	// file read를 위한 변수 선언
+	int sizeIdx = 0;
+	int sizeIdx1 = 0;
+	int sizeIdx2 = 0;
+	int chkComma = 0;//쉼표 체크 장치 --> 탐색 성공하면 1씩 증가
+	int chkValue = 0;
 	ifstream read_file;
-	string csv_buf;//csv에서 읽어온 데이터 저장
+	string readLine;//csv에서 한 줄씩 읽은 데이터 저장
+	string key1Genre;//장르(key1)
+	string key2Movie;//영화이름(key2)
+	string getValueGrade;//csv에서 가져온 grade는 우선 string 타입 --> 형변환 필요
+	double valueGrade;//평점(value)
 	// file open 시 file이 없는경우 exception을 발생시키기 위한 코드
 	read_file.exceptions(ifstream::failbit | ifstream::badbit);
 	read_file.open("movie.csv");//파일 읽어오기
 	while (!read_file.eof()) {
-		getline(read_file, csv_buf, ',');
-		cout << csv_buf << endl;
-	}
+		getline(read_file, readLine);
 
+		for (int i = 0; i < readLine.size(); i++) {//읽어온 줄의 길이만큼 반복작업 수행
+			if (readLine[i] == ',') {//쉼표 만나면 확인장치 1씩 증가
+				chkComma++;
+				if (chkComma == 1) {//첫 번째 쉼표 만나면 그 이전 영화 이름만 추출해 key2Movie에 저장
+					chkValue = i + 1;//평점 문자열이 시작되는 인덱스 체크
+					key2Movie = readLine.substr(0, i);
+				}
+			}
+			if (chkComma == 2) {//두 번째 쉼표 만나면 해당 쉼표 다음 문자열만 추출해 key1Genre에 저장
+				getValueGrade = readLine.substr(chkValue, i - 1);//chkValue부터 두 번재 쉼표 이전까지 문자열이 평점에 해당
+				valueGrade = stod(getValueGrade);//stod메서드 통해 double 형변환
+
+				key1Genre = readLine.substr(i + 1);
+				chkComma = 0;//다음 줄에 대한 콤마 정보를 확인하기 위해 0으로 초기화
+				break;
+			}
+		}
+		cout << "KEY1(genre) = " << key1Genre << '\t';
+		cout << "KEY2(movie) = " << key2Movie << '\t';
+		cout << "VALUE(grade) = " << valueGrade << endl;
+		cout << "-----------------------------------------------------------------------" << endl;
+		//if (vec_my_ds_1d.empty()) {//벡터가 공백이면
+		//	mds1[sizeIdx].setDictonary(key2Movie, valueGrade);//내부 벡터 객체 생성
+		//	vec_my_ds_1d.push_back(mds1[sizeIdx]);
+		//	MyDataStructure<string, vector<MyDataStructure<string, double>>> mds2(key1Genre, vec_my_ds_1d);//외부 벡터 객체 생성
+		//	vec_my_ds_2d.push_back(mds2);
+		//}
+		//else {//벡터가 공백이 아니면
+		//	bool chkRenew1 = true;//동일 key값 탐색 후 갱신 여부 체크
+		//	bool chkRenew2 = true;//동일 key값 탐색 후 갱신 여부 체크
+
+		//	sizeIdx2 = vec_my_ds_1d.size();//벡터에 새로 할당 될 경우 해당 벡터의 사이즈가 인덱스 정보로 활용
+		//	sizeIdx1 = vec_my_ds_2d.size();//벡터에 새로 할당 될 경우 해당 벡터의 사이즈가 인덱스 정보로 활용
+		//	for (int j = 0; j < vec_my_ds_2d.size(); j++) {
+		//		if (vec_my_ds_2d[j].getKey2D() == key1Genre) {//동일한 KEY1값이면 내부 벡터 KEY2 동일한지 탐색
+		//			chkRenew1 = false;//동일 key값 탐색 후 갱신 여부 체크
+		//			for (int k = 0; k < vec_my_ds_1d.size(); k++) {
+		//				if (vec_my_ds_1d[k].getKey1D() == key2Movie) {//동일한 KEY1값이면 내부 벡터 KEY2 동일한지 탐색
+		//					vec_my_ds_1d[k].setValue(valueGrade);
+		//					chkRenew2 = false;
+		//				}
+		//			}
+		//			if (chkRenew2) {
+		//				mds1[sizeIdx2].setDictonary(key2Movie, valueGrade);
+		//				vec_my_ds_1d.push_back(mds1[sizeIdx2]);
+		//			}
+		//		}
+		//		if (chkRenew1) {
+		//			MyDataStructure<string, vector<MyDataStructure<string, double>>> mds2(key1Genre, vec_my_ds_1d);//외부 벡터 객체 생성
+		//			vec_my_ds_2d.push_back(mds2);
+		//		}
+		//	}
+	}
 	// file 연결 해제
 	read_file.close();
 }
 
 int main() {
-	Problem1_2();
-	//Problem1_3();
+	//Problem1_2();
+	Problem1_3();
 
 	system("pause");
 	return 0;
