@@ -1,5 +1,6 @@
 #include <iostream>
 #include <string>
+#include <vector>
 using namespace std;
 
 #ifndef HOSPITAL_H
@@ -9,17 +10,18 @@ class Doctor {
 public:
 	/*Constructor*/
 	Doctor() {//스케줄 초기화
+		patientName = { "----\t" };
 		for (int i = 0; i < 4; i++){
 			for (int j = 0; j < 5; j++){
-				schedule[i][j] = { "----" };
+				schedule[i][j] = patientName;
 			}
 		}
 	}
 	/*Function*/
 	void set_DcName(string doctorName) { this->doctorName = doctorName; }//의사 이름 저장
-	void setName(string patientName);
 	void set_PatientInfo(string pName, int rDate, int rTime);//예약정보 저장
 	void reset_PatientInfo(string patientName);//취소 시 예약정보 초기화
+	void getSche();
 private:
 	string schedule[4][5]; //주 5일, 1당 4개 스케줄
 	string patientName; // 고객 정보(이름)-->Parameter
@@ -32,8 +34,6 @@ class Department {
 public:
 	/*Constructor & Destructor*/
 	Department() {//한 부서당 의사 한 명
-		dc = new Doctor();
-		dc->set_DcName("jonas");
 	}
 	~Department() { delete dc; }
 	/*Function*/
@@ -52,32 +52,32 @@ private:
 class Hospital {
 public:
 	/*Constructor & Destructor*/
-	Hospital(){//4개 진료부서 초기화
-		department = new Department[4];
-		department[0].set_deptName("a");
-		department[1].set_deptName("b");
-		department[2].set_deptName("c");
-		department[3].set_deptName("d");
-	}
-	~Hospital() { delete[]department; }
+	Hospital() {}//4개 진료부서 초기화
+	~Hospital() {}
 	/*Function*/
 	void execute_prog();//프로그램 실행
+	void activation_prog(int selection);//프로그램 활성화 --> 부서선택 입력값 기반으로 프로그램 진행 
 private:
 	Department* department;
+	vector<Department> vec;
 	int menu;
+	int selectMethod;
 	int selectDept;
-	int selectDate;
-	int selectTime;
-	string name;
+	string clientName;
+	string clientId;
+	string clientPhone;
+	//int selectDate;
+	//int selectTime;
 };
 
 class Console {
 public:
 	static int select_menu();//메뉴입력
 	static int select_dept();//진료부서 선택
-	static int select_date();//날짜 입력
-	static int select_time();//시간 입력
-	static string input_name();//이름 입력
+	static int select_method();//예약방식 선택
+	//static int select_date();//날짜 입력
+	//static int select_time();//시간 입력
+	//static string input_name();//이름 입력
 };
 
 #endif // !HOSPITAL_H
